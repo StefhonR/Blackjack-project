@@ -4,9 +4,6 @@ let playerScore = 0;
 let dealerScore = 0;
 
 const deck = [
-  "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A",
-  "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A",
-  "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A",
   "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"
 ];
 
@@ -76,7 +73,7 @@ function calculateScore(hand) {
     } else if (card === 'K' || card === 'Q' || card === 'J') {
       score += 10;
     } else {
-      score += parseInt(card); //still have no clue how parseInt work lol
+      score += parseInt(card); //parseInt basically takes a string and converts it to its corresponding interger value
     }
   }
 
@@ -88,12 +85,29 @@ function calculateScore(hand) {
 }
 
 function updateHands() {
-  const playerCardsDiv = document.getElementById('player-cards');
-  const dealerCardsDiv = document.getElementById('dealer-cards');
+    const playerCardsDiv = document.getElementById('player-cards');
+    const dealerCardsDiv = document.getElementById('dealer-cards');
+  
+    playerCardsDiv.innerHTML = '';
+    dealerCardsDiv.innerHTML = '';
+  
+    for (let card of playerHand) {
+      const img = document.createElement('img');
+      img.src = `images/${card}.png`;
+      playerCardsDiv.appendChild(img);
+    }
+  
+    for (let i = 0; i < dealerHand.length; i++) {
+      const img = document.createElement('img');
+      if (i === 0) {
+        img.src = 'images/back.png';
+      } else {
+        img.src = `images/${dealerHand[i]}.png`;
+      }
+      dealerCardsDiv.appendChild(img);
+    }
+  }
 
-  playerCardsDiv.innerHTML = playerHand.join(', ');
-  dealerCardsDiv.innerHTML = dealerHand.join(', ');
-}
 
 function endGame() {
   document.getElementById('new-game-button').disabled = false;
