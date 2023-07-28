@@ -3,9 +3,11 @@ let dealerHand = [];
 let playerScore = 0;
 let dealerScore = 0;
 
-const deck = [
+const originalDeck = [
   "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"
 ];
+
+let deck = [...originalDeck];
 
 function shuffleDeck() {
   for (let i = deck.length - 1; i > 0; i--) {
@@ -14,17 +16,20 @@ function shuffleDeck() {
   }
 }
 
+function resetDeck() {
+  deck = [...originalDeck];
+  shuffleDeck(); 
+}
+
 function startGame() {
   playerHand = [];
   dealerHand = [];
   playerScore = 0;
   dealerScore = 0;
 
+  resetDeck();
   shuffleDeck();
 
-  // Deal initial cards
-  playerHand.push(deck.pop());
-  dealerHand.push(deck.pop());
   playerHand.push(deck.pop());
   dealerHand.push(deck.pop());
 
@@ -65,20 +70,15 @@ function updateScores() {
 
 function calculateScore(hand) {
   let score = 0;
-  let hasAce = false;
 
   for (let card of hand) {
     if (card === 'A') {
-      hasAce = true;
+      score += 1;
     } else if (card === 'K' || card === 'Q' || card === 'J') {
       score += 10;
     } else {
       score += parseInt(card); //parseInt basically takes a string and converts it to its corresponding interger value
     }
-  }
-
-  if (hasAce && score + 10 <= 21) {
-    score += 10;
   }
 
   return score;
@@ -99,11 +99,7 @@ function updateHands() {
   
     for (let i = 0; i < dealerHand.length; i++) {
       const img = document.createElement('img');
-      if (i === 0) {
-        img.src = 'images/back.png';
-      } else {
-        img.src = `images/${dealerHand[i]}.png`;
-      }
+      img.src = `images/${dealerHand[i]}.png`;
       dealerCardsDiv.appendChild(img);
     }
   }
